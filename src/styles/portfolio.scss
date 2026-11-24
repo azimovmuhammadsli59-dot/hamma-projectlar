@@ -1,0 +1,210 @@
+$bg-obsidian: #050505;
+$surface-elevated: #0b0b0d;
+$surface-glass: rgba(12, 12, 14, 0.82);
+$border-silver: rgba(255, 255, 255, 0.12);
+$border-silver-strong: rgba(255, 255, 255, 0.34);
+$text-primary: #ffffff;
+$text-silver: #d4d4d8;
+$text-muted: #71717a;
+
+@mixin hairline-border($opacity: 0.12) {
+  border: 1px solid rgba(255, 255, 255, $opacity);
+}
+
+@mixin monochrome-gradient-text {
+  background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 45%, #71717a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.monochrome-title-gradient {
+  @include monochrome-gradient-text;
+}
+
+.nav-surface {
+  background-color: rgba(5, 5, 5, 0.88);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color 240ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 240ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  &.is-scrolled {
+    background-color: rgba(5, 5, 5, 0.94);
+    border-bottom-color: rgba(255, 255, 255, 0.16);
+  }
+}
+
+html.has-hw-gpu .nav-surface,
+html.has-hw-gpu .glass-panel {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.glass-panel {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.01) 100%
+  );
+  @include hairline-border(0.12);
+}
+
+.nav-link-underline {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ffffff, transparent);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &:hover::after,
+  &.is-active::after {
+    transform: scaleX(1);
+  }
+}
+
+.tilt-card-3d {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      360px circle at var(--glare-x, 50%) var(--glare-y, 50%),
+      rgba(255, 255, 255, 0.14),
+      transparent 62%
+    );
+    transition: opacity 220ms ease;
+    z-index: 2;
+  }
+
+  &:hover {
+    border-color: $border-silver-strong;
+    box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+.tilt-card-inner {
+  transform: translateZ(20px);
+}
+
+.hairline-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.magnetic-btn {
+  transition: transform 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 180ms ease,
+    color 180ms ease,
+    border-color 180ms ease;
+  will-change: transform;
+}
+
+.scroll-indicator-line {
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0));
+  transform-origin: top;
+  animation: scrollLineDrop 2.1s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes scrollLineDrop {
+  0% {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+  35% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  75% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+    opacity: 0;
+  }
+}
+
+.custom-cursor-ring,
+.custom-cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 90;
+  border-radius: 9999px;
+  will-change: transform;
+}
+
+.custom-cursor-ring {
+  width: 34px;
+  height: 34px;
+  margin-left: -17px;
+  margin-top: -17px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  transition: width 180ms ease, height 180ms ease, margin 180ms ease,
+    border-color 180ms ease, background-color 180ms ease;
+
+  &.is-hovering {
+    width: 52px;
+    height: 52px;
+    margin-left: -26px;
+    margin-top: -26px;
+    border-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.custom-cursor-dot {
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  margin-top: -2.5px;
+  background-color: #ffffff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator-line {
+    animation: none;
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+
+  .tilt-card-3d,
+  .magnetic-btn {
+    transition: border-color 150ms ease, background-color 150ms ease !important;
+    transform: none !important;
+  }
+}
